@@ -5,12 +5,15 @@ Created on Wed Mar  3 12:32:03 2021
 @author: eynavptia
 """ 
 import random
-import os
 
 
 # Function to display the Tic Tac Toe board status
 def display(board):
-    print(board)
+    print('\n'*10)
+    print("** "+board[6]+" ** "+board[7]+" ** "+board[8]+" **")
+    print("** "+board[3]+" ** "+board[4]+" ** "+board[5]+" **")
+    print("** "+board[0]+" ** "+board[1]+" ** "+board[2]+" **")
+   
 
 # Fucntion to clear the output each turn
 def clear():
@@ -18,7 +21,7 @@ def clear():
 
 #Randon the first to play
 def choose_first():
-    first = random.randint(1,2)
+    first = random.randint(1,3)
     if first == 1:
         player1 = marker();
         if player1 == 'X':
@@ -79,9 +82,11 @@ def board_checking(player1,player2,board):
         return 1
     elif board[6]==player1 and board[4]==player1 and board[2]==player1:
         return 1
+    elif board[8]==player1 and board[4]==player1 and board[0]==player1:
+        return 1
     
     #Checking if player 2 won
-    if board[0]==player2 and board[3]==player2 and board[6]==player2:
+    elif board[0]==player2 and board[3]==player2 and board[6]==player2:
         return 2
     elif board[0]==player2 and board[1]==player2 and board[2]==player2:
         return 2
@@ -91,6 +96,8 @@ def board_checking(player1,player2,board):
         return 2
     elif board[6]==player2 and board[4]==player2 and board[2]==player2:
         return 2
+    elif board[8]==player2 and board[4]==player2 and board[0]==player2:
+         return 2
     
     #Checking if we can countiue the game
     for i in board:
@@ -110,7 +117,6 @@ gameStatus = 'Y'
 while(gameStatus=='Y'):
     board =['','','','','','','','','']
     display(board)
-    first = choose_first();
     player1,player2=choose_first();
     while(board_checking(player1, player2, board)==0):
         print('Player 1:')
@@ -121,6 +127,8 @@ while(gameStatus=='Y'):
         print('player 2:')
         board = set_position_player(player2,board)
         display(board)
+        if board_checking(player1, player2, board)==2 or board_checking(player1, player2, board)==3 :
+            break
     result = board_checking(player1, player2, board)
     if result==3:
         print('TIE!')
