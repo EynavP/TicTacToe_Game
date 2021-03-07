@@ -10,37 +10,34 @@ import random
 # Function to display the Tic Tac Toe board status
 def display(board):
     print('\n'*10)
-    print("** "+board[6]+" ** "+board[7]+" ** "+board[8]+" **")
-    print("** "+board[3]+" ** "+board[4]+" ** "+board[5]+" **")
-    print("** "+board[0]+" ** "+board[1]+" ** "+board[2]+" **")
+    print("  "+board[6]+" | "+board[7]+" | "+board[8]+" ")
+    print("----------")
+    print("  "+board[3]+" | "+board[4]+" | "+board[5]+" ")
+    print("----------")
+    print("  "+board[0]+" | "+board[1]+" | "+board[2]+" ")
    
-
-# Fucntion to clear the output each turn
-def clear():
-   os.system('cls')
 
 #Randon the first to play
 def choose_first():
-    first = random.randint(1,3)
-    if first == 1:
-        player1 = marker();
+    first = random.randint(0,1)
+    if first == 0:
+        player1 = marker('Player 1');
         if player1 == 'X':
-            player2 = 'O'
+            return ('X','O')
         else:
-            player2 = 'X'
+            return ('O','X')
     else:
-        player2 = marker();
+        player2 = marker('Player 2');
         if player2 == 'X':
-            player1 = 'O'
+            return ('O','X')
         else:
-            player1 = 'X'
-    return player1,player2
+            return ('X','O')
 
 # Function to set the first player his marker
-def marker():
-    choice = input('player 1 please choose "X" or "O" :')
+def marker(player):
+    choice = input(f'{player} please choose "X" or "O" :')
     while choice!='X' and  choice!='O':
-        choice = input('player 1 please choose "X" or "O": ')
+        choice = input(f'{player} please choose "X" or "O": ').upper()
     return choice
 
 # Function to get the player position he wants
@@ -71,34 +68,23 @@ def set_position_player(player,board):
 # checking if the game can countiue of the game as ended
 def board_checking(player1,player2,board):
     
-    #Checking if the player 1 won
-    if board[0]==player1 and board[3]==player1 and board[6]==player1:
-        return 1
-    elif board[0]==player1 and board[1]==player1 and board[2]==player1:
-        return 1
-    elif board[2]==player1 and board[5]==player1 and board[8]==player1:
-        return 1
-    elif board[6]==player1 and board[7]==player1 and board[8]==player1:
-        return 1
-    elif board[6]==player1 and board[4]==player1 and board[2]==player1:
-        return 1
-    elif board[8]==player1 and board[4]==player1 and board[0]==player1:
-        return 1
-    
+    #Checking if player 1 won
+    if ((board[0] == board[3] == board[6] == player1) or
+        (board[0] == board[1] == board[2] == player1) or
+        (board[2] == board[5] == board[8] == player1) or
+        (board[6] == board[7] == board[8] == player1) or
+        (board[6] == board[4] == board[2] ==player1) or
+        (board[8] == board[4] == board[0]==player1)):
+            return 1
     #Checking if player 2 won
-    elif board[0]==player2 and board[3]==player2 and board[6]==player2:
-        return 2
-    elif board[0]==player2 and board[1]==player2 and board[2]==player2:
-        return 2
-    elif board[2]==player2 and board[5]==player2 and board[8]==player2:
-        return 2
-    elif board[6]==player2 and board[7]==player2 and board[8]==player2:
-        return 2
-    elif board[6]==player2 and board[4]==player2 and board[2]==player2:
-        return 2
-    elif board[8]==player2 and board[4]==player2 and board[0]==player2:
-         return 2
-    
+    elif ((board[0] == board[3] == board[6] == player2) or
+        (board[0] == board[1] == board[2] == player2) or
+        (board[2] == board[5] == board[8] == player2) or
+        (board[6] == board[7] == board[8] == player2) or
+        (board[6] == board[4] == board[2] ==player2) or
+        (board[8] == board[4] == board[0]==player2)):
+            return 2
+     
     #Checking if we can countiue the game
     for i in board:
         if i=='': #No one won and there is space on the board
@@ -112,10 +98,11 @@ def new_game():
         choice = input('Please choose "Y" or "N ')
     return choice
 
+#Main
 print('Welcome to "Tic Tac Toe" game!')
 gameStatus = 'Y'
 while(gameStatus=='Y'):
-    board =['','','','','','','','','']
+    board =['']*9
     display(board)
     player1,player2=choose_first();
     while(board_checking(player1, player2, board)==0):
@@ -124,7 +111,7 @@ while(gameStatus=='Y'):
         display(board)
         if board_checking(player1, player2, board)==1 or board_checking(player1, player2, board)==3 :
             break
-        print('player 2:')
+        print('Player 2:')
         board = set_position_player(player2,board)
         display(board)
         if board_checking(player1, player2, board)==2 or board_checking(player1, player2, board)==3 :
